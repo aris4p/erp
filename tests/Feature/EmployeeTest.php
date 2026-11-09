@@ -10,8 +10,8 @@ test('guests must login to view employees', function () {
     $this->get(route('employees.index'))->assertRedirect(route('login'));
 });
 
-test('authenticated users can view the example dashboard', function () {
-    $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertOk()->assertSee('Data contoh')->assertSee('Distribusi Departemen');
+test('authenticated users can view dashboard HR with real data states', function () {
+    $this->actingAs(User::factory()->create())->get(route('dashboard'))->assertOk()->assertSee('Dashboard HR')->assertSee('Total karyawan')->assertSee('Cuti menunggu approval');
 });
 
 test('users can search and view employees but cannot modify them or manage accounts', function () {

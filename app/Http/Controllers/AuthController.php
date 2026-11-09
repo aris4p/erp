@@ -22,7 +22,7 @@ class AuthController extends Controller
         }
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended($request->user()->employee ? route('my.profile') : route('dashboard'));
     }
 
     public function destroy(Request $request): RedirectResponse

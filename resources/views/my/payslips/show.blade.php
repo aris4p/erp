@@ -1,0 +1,15 @@
+@extends('layouts.erp')
+
+@section('title', 'Slip Gaji')
+
+@section('content')
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-4 print:hidden">
+        <a class="text-sm font-medium text-brand-600 hover:text-brand-700" href="{{ route('my.payslips') }}">Kembali ke slip gaji</a>
+        <button type="button" onclick="window.print()" class="min-h-11 rounded-lg bg-gray-800 px-5 text-sm font-semibold text-white hover:bg-gray-900">Cetak slip gaji</button>
+    </div>
+    <article class="mx-auto max-w-2xl border border-gray-300 bg-white p-6 md:p-10">
+        <header class="border-b border-gray-200 pb-5"><h1 class="text-2xl font-semibold text-gray-900">Slip gaji</h1><p class="mt-1 text-sm text-gray-600">Periode {{ $payrollRecord->period->translatedFormat('F Y') }}</p></header>
+        <dl class="grid gap-5 py-5 sm:grid-cols-2"><div><dt class="text-xs text-gray-600 uppercase">Karyawan</dt><dd class="mt-1 font-medium">{{ $employee->name }}</dd></div><div><dt class="text-xs text-gray-600 uppercase">NIK</dt><dd class="mt-1 font-medium">{{ $employee->employee_number }}</dd></div><div><dt class="text-xs text-gray-600 uppercase">Jabatan</dt><dd class="mt-1 font-medium">{{ $employee->position }}</dd></div><div><dt class="text-xs text-gray-600 uppercase">Tanggal bayar</dt><dd class="mt-1 font-medium">{{ $payrollRecord->paid_at?->translatedFormat('d M Y') ?: 'Belum dibayar' }}</dd></div></dl>
+        <div class="border-t border-gray-200 pt-4 text-sm"><div class="space-y-3">@foreach(['Gaji pokok' => $payrollRecord->basic_salary, 'Tunjangan' => $payrollRecord->allowances, 'Upah lembur' => $payrollRecord->overtime_pay, 'Potongan lain' => -$payrollRecord->deductions, 'BPJS Kesehatan' => -$payrollRecord->bpjs_health, 'BPJS Ketenagakerjaan' => -$payrollRecord->bpjs_employment] as $label => $amount)<div class="flex justify-between gap-4"><span>{{ $label }}</span><span class="whitespace-nowrap">Rp {{ number_format((float) $amount, 0, ',', '.') }}</span></div>@endforeach</div><div class="mt-5 flex justify-between border-t border-gray-300 pt-4 text-base font-semibold"><span>Gaji bersih</span><span class="whitespace-nowrap">Rp {{ number_format((float) $payrollRecord->net_pay, 0, ',', '.') }}</span></div></div>
+    </article>
+@endsection
